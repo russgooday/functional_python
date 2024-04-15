@@ -60,7 +60,7 @@ def _set_by_path(path: list, value: any, obj: dict|list) -> dict|list:
         obj = dict(enumerate(obj) if isinstance(obj, list) else obj.items())
 
     if rest_of_keys:
-        target = _get_prop(obj, key)
+        target = _get_prop(key, obj)
 
         if not isinstance(target, (list, dict)):
             target = [] if isinstance(rest_of_keys[0], int) else {}
@@ -89,5 +89,6 @@ def _path_equals(val: any, keys: list, obj: dict|list) -> bool:
 # Running the tests
 if __name__ == "__main__":
     print(_set_by_path(['a', 'b', 'c'], 42, {'a': 5})) # {'a': {'b': {'c': 42}}}
+    print(_set_by_path(['a', 1], 'd', {'a': ['b', 'c']}))
     print(_get_by_path(['pet', 'age'], {'pet': {'age': 10}})) # 10
     print(_path_equals(10, ['pet', 'age'], {'pet': {'age': 10}})) # True

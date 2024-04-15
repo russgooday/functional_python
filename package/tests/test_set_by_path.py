@@ -1,7 +1,7 @@
 ''' Tests for the set_by_path function. '''
 import pytest
 
-from package.internals._path import set_by_path
+from package.path import set_by_path
 
 # Tests for set_by_path function
 test_cases = [
