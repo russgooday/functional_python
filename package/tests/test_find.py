@@ -1,6 +1,6 @@
 import re
 import pytest
-from package.internals._find import _find, _find_all
+from package.find import find, find_all
 
 # Sample data
 users = [
@@ -15,24 +15,36 @@ users = [
 strings = ['hello', 'world', 'foo', 'bar', 'baz']
 
 
-# Tests for _find function
+# Tests for find function
 def test_find_by_dict():
-    assert _find({'name': 'Jane'}, users) == {'name': 'Jane', 'age': 30, 'active': False}
+    assert find({'name': 'Jane'}, users) == {'name': 'Jane', 'age': 30, 'active': False}
 
 def test_find_by_lambda():
-    assert _find(lambda user: user['age'] == 25, users) == {'name': 'John', 'age': 25, 'active': True}
+    assert find(lambda user: user['age'] == 25, users) == {'name': 'John', 'age': 25, 'active': True}
+
+def test_find_curried():
+    find_jane = find({'name': 'Jane'})
+    assert find_jane(users) == {'name': 'Jane', 'age': 30, 'active': False}
 
 def test_find_by_list():
-    assert _find(['age', 35], users) == {'name': 'Jim', 'age': 35, 'active': True}
+    assert find(['age', 35], users) == {'name': 'Jim', 'age': 35, 'active': True}
 
 def test_find_all_by_dict():
-    assert _find_all({'age': 30, 'active': False}, users) == [
+    assert find_all({'age': 30, 'active': False}, users) == [
         {'name': 'Jane', 'age': 30, 'active': False},
         {'name': 'Joe', 'age': 30, 'active': False}
     ]
 
 def test_find_all_by_regex():
-    assert _find_all(re.compile(r'^b'), strings) == ['bar', 'baz']
+    assert find_all(re.compile(r'^b'), strings) == ['bar', 'baz']
+
+def test_find_all_curried():
+    find_all_active = find_all({'active': True})
+    assert find_all_active(users) == [
+        {'name': 'John', 'age': 25, 'active': True},
+        {'name': 'Jim', 'age': 35, 'active': True},
+        {'name': 'Jill', 'age': 45, 'active': True}
+    ]
 
 # Running the tests
 if __name__ == "__main__":
