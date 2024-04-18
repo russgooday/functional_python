@@ -25,4 +25,5 @@ prop_equals = _curry_3(_prop_equals)
 # Running the tests
 if __name__ == "__main__":
     print(get_prop('age', {'age': 11})) # 11
+    print(get_prop('name', {'age': 11})) # None
     print(prop_equals(10, 'age', {'age': 10})) # True
