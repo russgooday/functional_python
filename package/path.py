@@ -4,7 +4,7 @@ from package.internals._curry import _curry_2, _curry_3
 from package.internals._path import _get_by_path, _set_by_path, _path_equals
 
 def _get_by_path_or_none(path, obj):
-    return _get_by_path(path, obj)
+    return _get_by_path(path, obj, None)
 
 # Curried functions
 
@@ -31,7 +31,7 @@ path_equals = _curry_3(_path_equals)
 
 # Running the tests
 if __name__ == "__main__":
-    print(set_by_path(['a', 'b', 'c'], 42, {'a': 5})) # {'a': {'b': {'c': 42}}}
-    print(set_by_path(['a', 1], 'd', {'a': ['b', 'c']}))
-    print(get_by_path(['pet', 'age'], {'pet': {'age': 10}})) # 10
-    print(path_equals(10, ['pet', 'age'], {'pet': {'age': 10}})) # True
+    print(set_by_path(['a', 'b', 'c'], 42, {'a': 5}))               # {'a': {'b': {'c': 42}}}
+    print(set_by_path(['a', 1], 'd', {'a': ['b', 'c']}))            # {'a': ['b', 'd']}
+    print(get_by_path(['pet', 'age'], {'pet': {'age': 10}}))        # 10
+    print(path_equals(10, ['pet', 'age'], {'pet': {'age': 10}}))    # True

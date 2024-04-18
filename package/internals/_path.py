@@ -1,12 +1,5 @@
 ''' Path functions get_by_path, set_by_path and path_equals '''
-from package.internals._prop import _get_prop
-
-def _pad_list(lst: list, target_length: int, fill_value=None):
-    """Pad the list to the target length with the specified fill value."""
-    if len(lst) >= target_length:
-        return lst[:]
-    # pad the list with the fill value to the target length
-    return lst[:] + [fill_value] * (target_length - len(lst))
+from package.internals._prop import _get_prop, _set_prop
 
 def _get_by_path(path: list, obj: list|dict, default=None) -> any:
     '''
@@ -47,29 +40,15 @@ def _set_by_path(path: list, value: any, obj: dict|list) -> dict|list:
 
     key, *rest_of_keys = path
 
-    # if key is an integer make a shallow copy
-    # lists will be padded up to the given key index number
-    # e.g. with a key of 2 ['a', 'b'] → ['a', 'b', None]
-    if isinstance(key, int) and isinstance(obj, list):
-        obj = _pad_list(obj, key + 1)
-
-    # if key is string make a shallow copy of source object
-    # lists will be converted to dictionaries with indexes becoming keys
-    # e.g. ['a', 'b'] → ['0': 'a', '1': 'b']
-    if isinstance(key, str):
-        obj = dict(enumerate(obj) if isinstance(obj, list) else obj.items())
-
     if rest_of_keys:
-        target = _get_prop(key, obj)
+        next_obj = _get_prop(key, obj)
 
-        if not isinstance(target, (list, dict)):
-            target = [] if isinstance(rest_of_keys[0], int) else {}
+        if not isinstance(next_obj, (list, dict)):
+            next_obj = [] if isinstance(rest_of_keys[0], int) else {}
 
-        obj[key] = _set_by_path(rest_of_keys, value, target)
-    else:
-        obj[key] = value
+        value = _set_by_path(rest_of_keys, value, next_obj)
 
-    return obj
+    return _set_prop(key, value, obj)
 
 def _path_equals(val: any, keys: list, obj: dict|list) -> bool:
     '''
@@ -88,7 +67,7 @@ def _path_equals(val: any, keys: list, obj: dict|list) -> bool:
 
 # Running the tests
 if __name__ == "__main__":
-    print(_set_by_path(['a', 'b', 'c'], 42, {'a': 5})) # {'a': {'b': {'c': 42}}}
-    print(_set_by_path(['a', 1], 'd', {'a': ['b', 'c']}))
-    print(_get_by_path(['pet', 'age'], {'pet': {'age': 10}})) # 10
-    print(_path_equals(10, ['pet', 'age'], {'pet': {'age': 10}})) # True
+    print(_set_by_path(['a', 'b', 'c'], 42, {'a': 5}))              # {'a': {'b': {'c': 42}}}
+    print(_set_by_path(['a', 1], 'd', {'a': ['b', 'c']}))           # {'a': ['b', 'd']}
+    print(_get_by_path(['pet', 'age'], {'pet': {'age': 10}}))       # 10
+    print(_path_equals(10, ['pet', 'age'], {'pet': {'age': 10}}))   # True
