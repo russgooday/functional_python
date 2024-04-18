@@ -31,3 +31,9 @@ compose_two,
 compose_three,
 compose,
 pipe
+
+## Curry
+curry
+
+## Memoize
+memoize
