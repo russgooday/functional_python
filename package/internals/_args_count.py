@@ -1,11 +1,26 @@
 '''This module contains functions to work with the number of arguments'''
 
-def _args_count(fn: callable)->int:
-    '''returns number of parameters in given function'''
+def _args_count(fn: callable, dictionary=False)->int:
+    '''
+        Returns number of parameters in given function
+
+        if dictionary flag is True, returns a dictionary of parameter properties.
+    '''
     if not callable(fn):
         raise TypeError('fn must be a callable')
 
-    return fn.__code__.co_argcount
+    if not dictionary:
+        return fn.__code__.co_argcount
+
+    params = fn.__code__.co_argcount
+    defaults = len(fn.__defaults__ or ())
+
+    return {
+        'params': params,
+        'defaults': defaults,
+        'non_defaults': params - defaults
+    }
+
 
 def _adjust_args_count(fn: callable) -> callable:
     '''
