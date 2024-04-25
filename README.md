@@ -16,6 +16,7 @@ path_equals
 
 ## Find
 find,
+find_last,
 find_all
 
 ## Flatten
