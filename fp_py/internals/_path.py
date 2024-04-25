@@ -1,5 +1,6 @@
 ''' Path functions get_by_path, set_by_path and path_equals '''
 from fp_py.internals._prop import _get_prop, _set_prop
+from fp_py.internals._get_iteratee import _get_iteratee
 
 def _get_by_path(path: list, obj: list|dict, default=None) -> any:
     '''
@@ -50,12 +51,15 @@ def _set_by_path(path: list, value: any, obj: dict|list) -> dict|list:
 
     return _set_prop(key, value, obj)
 
+
 def _path_equals(val: any, keys: list, obj: dict|list) -> bool:
     '''
     checks if a nested property value following a given path is equal to a given value
 
-    e.g.    pathEquals(['pet', 'age'], 3, user)
-            equivalent to `user and user['pet'] and user['pet']['age'] == 3`
+    e.g.    user = {'pet': {name: 'Fido', 'age': 10}}
+
+            pathEquals(['pet', 'age'], 3, user) # true
+            pathEquals(['pet', 'name'], 'Spot', user) # true
 
     :param keys: a list of keynames(str) or/and indexes(int) that make the path
     :param val: the value to compare
@@ -66,10 +70,21 @@ def _path_equals(val: any, keys: list, obj: dict|list) -> bool:
     return _get_by_path(keys, obj) == val
 
 
-if __name__ == "__main__":
-    # Examples
+def _path_satisfies(fn: callable, keys: list, obj: dict|list) -> bool:
+    '''
+    checks if a nested property value following a given path satisfies a given predicate
 
-    print(_set_by_path(['a', 'b', 'c'], 42, {'a': 5}))              # {'a': {'b': {'c': 42}}}
-    print(_set_by_path(['a', 1], 'd', {'a': ['b', 'c']}))           # {'a': ['b', 'd']}
-    print(_get_by_path(['pet', 'age'], {'pet': {'age': 10}}))       # 10
-    print(_path_equals(10, ['pet', 'age'], {'pet': {'age': 10}}))   # True
+    e.g.    user = {'pet': {name: 'Fido', 'age': 10}}
+
+            path_satisfies(['pet', 'age'], lambda x: x > 3, user) # true
+            path_satisfies({'name': 'Fido', 'age': 10}, ['pet'], user) # true
+            path_satisfies(['name', 'Spot'], ['pet'], user) # false
+
+    :param fn: a predicate function or iteratee
+    :param keys: a list of keynames(str) or/and indexes(int) that make the path
+    :param obj: the object to search e.g. dict, list
+
+    :return: bool
+    '''
+    predicate = _get_iteratee(fn)
+    return predicate(_get_by_path(keys, obj))

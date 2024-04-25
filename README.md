@@ -12,7 +12,8 @@ prop_equals
 ## Path
 get_by_path,
 set_by_path,
-path_equals
+path_equals,
+path_satisfies
 
 ## Find
 find,
