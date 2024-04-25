@@ -1,6 +1,6 @@
 ''' find items in a list'''
 from fp_py.internals._curry import _curry_2
-from fp_py.internals._find import _find, _find_all
+from fp_py.internals._find import _find, _find_last, _find_all
 
 # find
 # callable → list → any|None
@@ -11,6 +11,15 @@ from fp_py.internals._find import _find, _find_all
 # e.g. find(lambda x: x % 2 == 0, [1, 2, 3, 4, 5]) -> 2
 find = _curry_2(_find)
 
+# find_last
+# callable → list → any|None
+# params: (fn, lst)
+# returns: any|None
+# Description: takes a predicate function/iteratee and a list, and
+# returns the last found item to match the predicate, or None
+# e.g. find_last(lambda x: x % 2 == 0, [1, 2, 3, 4, 5]) -> 4
+find_last = _curry_2(_find_last)
+
 # find_all
 # callable → list → list
 # params: (fn, lst)
@@ -20,15 +29,17 @@ find = _curry_2(_find)
 # e.g. find_all(lambda x: x % 2 == 0, [1, 2, 3, 4, 5]) -> [2, 4]
 find_all = _curry_2(_find_all)
 
-# Some Examples
+# Examples
 if __name__ == "__main__":
 
     # create a predicate function
     find_greater_than_2 = find(lambda x: x > 2)
+    find_last_even = find_last(lambda x: x % 2 == 0)
     find_all_greater_than_2 = find_all(lambda x: x > 2)
 
     # find using a predicate function
     print(find_greater_than_2([1, 2, 3, 4, 5])) # 3
+    print(find_last_even([1, 2, 3, 4, 5])) # 4
     print(find_all_greater_than_2([1, 2, 3, 4, 5])) # [3, 4, 5]
 
     students = [
