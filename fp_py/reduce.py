@@ -2,6 +2,8 @@
 from fp_py.internals._curry import _curry_3
 from fp_py.internals._reduce import _reduce, _reduce_right
 
+__all__ = ['reduce', 'reduce_right']
+
 # reduce
 # callable → any → list → any
 # params: (fn, accumulator, lst)
