@@ -30,6 +30,5 @@ from fp_py.internals._curry import _partial_curry, _curry_2, _curry_3
 # @param fn: function
 # @return: curried function|Any
 curry = _partial_curry
-
-curry2 = _curry_2
-curry3 = _curry_3
+curry_2 = _curry_2
+curry_3 = _curry_3
