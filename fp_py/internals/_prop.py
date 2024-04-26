@@ -1,4 +1,5 @@
 ''' property functions '''
+from fp_py.internals._equals import _equals
 
 def _pad_list_end(lst: list, targ_len:int, fill=None):
     """
@@ -60,4 +61,4 @@ def _prop_equals(val, key:str|int, obj:dict|list):
 
         @return: bool
     '''
-    return _get_prop(key, obj, False) == val
+    return _equals(_get_prop(key, obj), val)
