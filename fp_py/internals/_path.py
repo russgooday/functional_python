@@ -1,3 +1,5 @@
+# TODO: Update documentation for functions
+
 ''' Path functions get_by_path, set_by_path and path_equals '''
 from fp_py.internals._prop import _get_prop, _set_prop
 from fp_py.internals._get_iteratee import _get_iteratee
@@ -58,8 +60,8 @@ def _path_equals(val: any, keys: list, obj: dict|list) -> bool:
 
     e.g.    user = {'pet': {name: 'Fido', 'age': 10}}
 
-            pathEquals(['pet', 'age'], 3, user) # true
-            pathEquals(['pet', 'name'], 'Spot', user) # true
+            pathEquals(10, ['pet', 'age'], user) # true
+            pathEquals('Spot', ['pet', 'name'], user) # false
 
     :param keys: a list of keynames(str) or/and indexes(int) that make the path
     :param val: the value to compare
