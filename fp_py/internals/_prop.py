@@ -46,7 +46,7 @@ def _set_prop(key:str|int, val:any, obj:dict|list):
         lst[key] = val
         return lst
 
-    obj = dict(enumerate(obj) if isinstance(obj, list) else obj.items())
+    obj = dict(enumerate(obj)) if isinstance(obj, list) else obj.copy()
     obj[key] = val
     return obj
 
