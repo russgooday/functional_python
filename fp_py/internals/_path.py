@@ -1,4 +1,4 @@
-''' Path functions get_by_path, set_by_path and path_equals '''
+''' Path functions get_by_path, set_by_path, path_equals and path_satisfies '''
 from fp_py.internals._prop import _get_prop, _set_prop
 from fp_py.internals._get_iteratee import _get_iteratee
 
@@ -37,7 +37,7 @@ def _set_by_path(path: list, value: any, obj: dict|list) -> dict|list:
 
         :param path: a list of keynames(str) or/and indexes(int) that make the path
         :param value: the value to set
-        :param obj: the object to search e.g. dict, list
+        :param obj: the object to clone and update e.g. dict, list
 
         Does not mutate the original object, but returns a new object with the updated value
         :return: dict|list
